@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="chatbody">
+    <h3>
+      <span><a href="{% url 'chatapp:chats' %}">STAT-Chat</a> | </span>Friend Requests
+    </h3>
+    <div class="sub-div">
+      <p class="para">@ <span><strong>{{request.user.username}}</strong></span></p>
+    </div>
+    <div class="suggestionContainer">
+      
+
+      {% for f_req in f_requests  %}
+      <div class="suggestion">
+
+        {% if f_req.sender.profiles.profile_picture %}
+
+        <div class="pic">
+          <img src="{{f_req.sender.profiles.profile_picture.url}}" alt="">
+        </div>
+
+
+        {% else %}
+
+        <div class="pic">
+          <img src="" alt="">
+        </div>
+        
+        
+        {% endif %}
+
+      
+
+
+        <div class="user-container">
+          <div class="user-info">
+            <h5>{{f_req.sender.username}}</h5>
+          </div>
+  
+          <div class="n-btns">
+            <div class="confirm-btn" data-id={{f_req.sender.id}}>Confirm</div>
+            <div class="del-btn" data-id={{f_req.sender.id}}>Delete</div>
+          </div>
+        </div>
+      </div>
+          
+        {% endfor %}
+          
+  
+       
+
+
+   
+  
+    </div>
+  
+  
+  </div>
+
+
+  <script>
+    // selecting all the confirm btns on this current page
+    let confirm_btns = document.querySelectorAll(".confirm-btn")
+
+    
+    // selecting all the delete buttons on this current page
+    let delete_btns = document.querySelectorAll(".del-btn")
+
+    // looping through the delete-btns
+    for(let btn of delete_btns){
+      btn.addEventListener("click", rejectRequest)
+    }
+   
+   // looping through the confirm-btns
+    for(let btn of confirm_btns){
+      btn.addEventListener("click", addFriend)
+    }
+
+
+    // this function sends the ID of the user that sent a friend request, to a backend view to be added to the logged-in user friend list
+    async function acceptFriend(data, btn) {
+      try {
+        let url = "{% url 'chatapp:accept-request' %}"
+        const response = await fetch(url, {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify(data),
+        });
+    
+        const result = await response.json();
+        console.log("Success:", result);
+        if(result == "yes"){
+          btn.innerText = "Confirmed"
+          btn.classList.add("disable")
+          btn.nextElementSibling.classList.add("disable")
+
+        }
+
+     
+
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    // this function calls the acceptFriend function and passes the necessary arguments required.
+    function addFriend(e){
+      const data = { id: e.target.dataset.id };
+      const btn = e.target
+      acceptFriend(data, btn);
+    }
+
+
+  
+
+// this function sends the ID of the user that sent a friend request in order to delete the friend request sent
+    async function rejectFriend(data, btn) {
+      try {
+        let url = "{% url 'chatapp:reject-request' %}"
+        const response = await fetch(url, {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify(data),
+        });
+    
+        const result = await response.json();
+        console.log("Success:", result);
+        
+        let btn_parent = btn.parentElement.parentElement.parentElement 
+        btn_parent.style.display="none"
+        
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    // this function calls the rejectFriend function and passes the necessary arguments required.
+    function rejectRequest(e){
+      const data = { id: e.target.dataset.id };
+      const btn = e.target
+      rejectFriend(data, btn)
+    }
+
+
+   
+
+  </script>
+  
+
+{% endblock content %}

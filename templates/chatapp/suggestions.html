@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load custom_filter %}
+
+{% block content %}
+
+
+
+<div class="chatbody" id="chatbody">
+
+    <h3><span><a href="{% url 'chatapp:chats' %}">STAT-Chat</a> | </span>Suggestions</h3>
+    <div class="sub-div">
+      <p class="para">@ <span><strong>{{request.user.username}}</strong></span></p>
+    </div>
+    
+    <div class="suggestionContainer">
+
+  
+    
+    {% for friend in s_friends  %}
+
+
+    
+    
+
+    <div class="suggestion">
+
+      {% if friend.profiles.profile_picture %}
+      
+      <div class="pic">
+        <img src="{{friend.profiles.profile_picture.url}}" alt="">
+      </div>
+
+      {% else %}
+      
+      <div class="pic">
+        <img src="" alt="">
+      </div>
+
+      {% endif %}
+
+       
+
+        <div class="user-container">
+
+          <div class="user-info">
+              <h5>{{friend.username}}</h5>
+          </div>
+
+
+          
+          {% if friend.id|if_id_in_queryset:f_requests %}
+
+          <div class="n-btns">
+          <div class="confirm-btn add-btn disable" data-id={{friend.id}}>Request Sent</div>
+          <div class="del-btn" data-id={{friend.id}} style="font-size: 13px">Cancel request</div>
+        </div>
+
+
+          {% else %}
+
+
+           <div class="n-btns">
+          <div class="confirm-btn add-btn" data-id={{friend.id}}>Add Friend</div>
+          <div class="del-btn" data-id={{friend.id}}>Remove</div>
+        </div>
+
+
+          {% endif %}
+
+
+
+        
+     
+            
+        {% comment %} <div class="n-btns">
+          <div class="confirm-btn add-btn" data-id={{friend.id}}>Add Friend</div>
+          <div class="del-btn" data-id={{friend.id}}>Remove</div>
+        </div> {% endcomment %}
+
+
+        {% comment %} <div class="n-btns">
+          <div class="confirm-btn add-btn disable" data-id={{friend.id}}>Request Sent</div>
+          <div class="del-btn" data-id={{friend.id}} style="font-size: 13px">Cancel Request</div>
+        </div> {% endcomment %}
+        
+      </div>
+
+    </div>
+
+
+    
+    
+
+    {% endfor %}
+
+
+
+
+
+
+    </div>
+
+    
+
+  </div>
+
+
+
+  <script>
+    // selectors
+    let add_btns = document.querySelectorAll(".confirm-btn")
+    let cancel_btns = document.querySelectorAll(".del-btn")
+
+    //looping through the "add-friend buttons"
+    for(let btn of add_btns){
+        btn.addEventListener("click", send_friend_request)
+    }
+
+// addFriend function helps to send the id of a user, in order to make a friend request.
+    async function addFriend(data, btn) {
+      try {
+        const url = "{% url 'chatapp:send-request' %}"
+        const response = await fetch(url, {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify(data),
+        });
+    
+        const result = await response.json();
+        console.log("Success:", result);
+        btn.innerText = "Request sent"
+        btn.classList.add("disable")
+        btn.nextElementSibling.style.fontSize = "13px"
+        btn.nextElementSibling.innerText = `Cancel request`
+        console.log(btn.nextElementSibling)
+        console.log(btn)
+        
+       
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+    
+    //this function helps to call the addFriend function and it passess the necessary arguments.
+    function send_friend_request(e){
+        user_id = e.target.dataset.id
+        const data = { id: user_id };
+        const btn = e.target
+        addFriend(data, btn);
+    }
+
+
+
+
+
+
+
+
+    //looping through the "remove-friend buttons"
+    for(let btn of cancel_btns){
+      btn.addEventListener("click", cancel_friend_request)
+      console.log(btn)
+    }
+
+
+// removeFriend function helps to send the id of a user, in order to make a cancel a friend request.
+    async function removeFriend(data, btn) {
+      try {
+        const url = "{% url 'chatapp:cancel-request' %}"
+        const response = await fetch(url, {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify(data),
+        });
+    
+        const result = await response.json();
+        console.log("Success:", result);
+        console.log(btn)
+        btn.innerText = "Remove"
+        btn.style.fontSize="16px"
+        btn.previousElementSibling.classList.remove("disable")
+        btn.previousElementSibling.innerText = "Add Friend"
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+    
+   
+
+
+
+
+    //this function helps to call the removeFriend function and it passess the necessary arguments.
+    function cancel_friend_request(e){
+
+      if(e.target.innerText == `Cancel request`){
+        user_id = e.target.dataset.id
+        const data = { id: user_id };
+        const btn = e.target
+        removeFriend(data, btn);
+
+      }
+
+      else{
+
+        let btn_container_element = e.target.parentElement.parentElement.parentElement
+        btn_container_element.style.display = "none"
+
+      }
+        
+
+    }
+
+
+ 
+  </script>
+
+{% endblock content %}

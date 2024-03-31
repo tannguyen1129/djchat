@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatty</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/regular.min.css"
+      integrity="sha512-WidMaWaNmZqjk3gDE6KBFCoDpBz9stTsTZZTeocfq/eDNkLfpakEd7qR0bPejvy/x0iT0dvzIq4IirnBtVer5A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css"
+      integrity="sha512-yDUXOUWwbHH4ggxueDnC5vJv4tmfySpVdIcN1LksGZi8W8EVZv4uKGrQc0pVf66zS7LDhFJM7Zdeow1sw1/8Jw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css"
+      integrity="sha512-SgaqKKxJDQ/tAUAAXzvxZz33rmn7leYDYfBP+YoMRSENhf3zJyx3SBASt/OfeQwBHA1nxMis7mM3EV/oYT6Fdw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="index.css" />
+
+    <style>
+      a{
+        color: black;
+      }
+    
+      a:hover{
+        color: #662d91;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="chatContainer">
+      
+      
+      
+      
+      <div class="header">
+        <div class="sub-div">
+          <a href="{% url 'chats' %}">
+            <h2 style="font-weight: bold">Chatty</h2>
+          </a>
+          <p class="para">@<span style="margin-right: 10px">
+              <strong>John</strong></span>
+          </p>
+        </div>
+      </div>
+      
+      <div class="control-icons">
+        <div class="icons-container" id="not_container">
+          <a href="">
+            <i class="fa-solid fa-bell"></i>
+           
+            <div class="bg"><small id="noti">2</small></div>
+       
+          </a>
+        </div>
+      
+        <div class="icons-container" id="fri_container">
+          <a href="">
+            <i class="fa-solid fa-users-line"></i>
+            <div class="bg"><small id="fr">3</small></div>
+          </a>
+        </div>
+      
+        <div class="icons-container">
+          <a href="">
+            <i class="fa-solid fa-user-plus"></i>
+          </a>
+        </div>
+      
+      
+        <div class="icons-container">
+          <a href="">
+            <i class="fa-solid fa-gear"></i>
+          </a>
+        </div>
+      
+      
+        <div class="icons-container">
+          <a href="">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </a>
+        </div>
+      
+      
+      
+        <div class="user-profile">
+          <img src="" alt="">
+        </div>
+      </div>
+      
+      <div class="chatbody">
+        <h3>Chats</h3>
+        <p class="para">You have 2 new messages</p>
+      
+        <div class="innerchatbody">
+      
+          
+         
+      
+          <a href="">
+      
+      
+            <div class="chatbox">
+              <div class="pic">
+                <img src="" alt="">
+              </div>
+        
+              <div class="name_msg">
+        
+                <div class="name1">
+                  <h4>Sam</h4>
+                  <small>3 seconds ago</small>
+                 </div>
+        
+                 <div class="name2">
+                  
+                  <small>How are you today?</small>
+                
+      
+                 
+                  <div class="num_of_msg">2</div>
+               
+                 
+                  
+                 </div>
+                
+              </div>
+        
+            </div>
+        
+        
+        </a>
+
+
+        <a href="">
+      
+      
+          <div class="chatbox">
+            <div class="pic">
+              <img src="" alt="">
+            </div>
+      
+            <div class="name_msg">
+      
+              <div class="name1">
+                <h4>Sam</h4>
+                <small>3 seconds ago</small>
+               </div>
+      
+               <div class="name2">
+                
+                <small>How are you today?</small>
+              
+    
+               
+                <div class="num_of_msg">2</div>
+             
+               
+                
+               </div>
+              
+            </div>
+      
+          </div>
+      
+      
+      </a>
+
+
+
+      <a href="">
+      
+      
+        <div class="chatbox">
+          <div class="pic">
+            <img src="" alt="">
+          </div>
+    
+          <div class="name_msg">
+    
+            <div class="name1">
+              <h4>Sam</h4>
+              <small>3 seconds ago</small>
+             </div>
+    
+             <div class="name2">
+              
+              <small>How are you today?</small>
+            
+  
+             
+              <div class="num_of_msg">2</div>
+           
+             
+              
+             </div>
+            
+          </div>
+    
+        </div>
+    
+    
+    </a>
+            
+            
+      
+      
+         
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="registerFormContaier">
+
+    <div class="registerForm">
+        <a href="{% url 'chatapp:chats' %}"><h1>STAT-Chat</h1></a>
+        <p>Sign up to get started.</p>
+        <form action="" method='POST'>
+            {% csrf_token %}
+            
+            {% for field in form %}
+            {% if field.errors %}
+            {{field}}
+            <small>{{field.errors}}</small>
+
+            {% else %}
+            {{field}}
+            <small>       </small>
+            
+
+            {% endif %}
+            
+
+
+            
+            {% endfor %}
+                
+            {% comment %} <input type="text" name="Username" placeholder="Enter Username">
+            <input type="text" name="Firstname" placeholder="Enter Firstname">
+            <input type="text" name="Lastname" placeholder="Enter Lastname">
+            <input type="password" name="Password" placeholder="Enter Password">
+            <input type="password" name="Password" placeholder="Confirm Password"> {% endcomment %}
+            <button>Register</button>
+            <span><a href="{% url 'chatapp:signin' %}">Login</a> if you have an account.</span>
+        </form>
+    </div>
+
+ 
+</div>
+{% endblock content %}

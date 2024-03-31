@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block content %}
+
+<div class="chatbody">
+    <h3><span><a href="{% url 'chatapp:chats' %}">STAT-Chat</a> | </span>Notifications</h3>
+    <div class="sub-div">
+        
+        <p class="para">@ <span><strong>{{request.user.username}}</strong></span></p>
+      </div>
+
+        <div class="notificationContainer">
+
+            
+            {% for notification in notifications %}
+
+            <div class="notification">
+
+                {% if notification.sender.profiles.profile_picture %}
+                
+                <div class="pic">
+                    <img src="{{notification.sender.profiles.profile_picture.url}}" alt="">
+                </div>
+
+                {% else %}
+
+                <div class="pic">
+                    <img src="" alt="">
+                </div>
+
+                
+                {% endif %}
+
+                
+                <div class="msg">
+                    {% comment %} <p><strong>@{{notification.sender.username}}</strong> just sent you a message. </p> {% endcomment %}
+                    <p>{{notification.description}}</p>
+                    <small>{{notification.created | naturaltime }}</small>
+                </div>
+            </div>
+                
+            {% endfor %}
+                
+
+           
+
+
+
+
+        </div>
+
+      </div>
+
+{% endblock content %}
+
+<div class="chatbody">
+        <h1>Notifications</h1>
+        <p class="para">You have 2 new messages</p>
+
+        <div class="notificationContainer">
+
+            <div class="notification">
+                <div class="pic"></div>
+                <div class="msg">
+                    <p><strong>@Mike</strong> just sent you a message. </p>
+                    <small>2 mins ago</small>
+                </div>
+            </div>
+
+
+            <div class="notification">
+                <div class="pic"></div>
+                <div class="msg">
+                    <p><strong>@Mike</strong> just sent you a message. </p>
+                    <small>2 mins ago</small>
+                </div>
+            </div>
+
+            <div class="notification">
+                <div class="pic"></div>
+                <div class="msg">
+                    <p><strong>@Mike</strong> just sent you a message. </p>
+                    <small>2 mins ago</small>
+                </div>
+            </div>
+
+
+            <div class="notification">
+                <div class="pic"></div>
+                <div class="msg">
+                    <p><strong>@Mike</strong> just sent you a message. </p>
+                    <small>2 mins ago</small>
+                </div>
+            </div>
+
+
+        </div>
+
+      </div>

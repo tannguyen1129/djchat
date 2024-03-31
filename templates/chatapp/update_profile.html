@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .chatContainer{
+        padding: 10px 0px 10px 0px;
+    }
+    .chatContainer, .registerFormContaier, form{
+        height: auto;
+       
+    }
+
+    input[type="checkbox"]{
+        width: 20px !important;
+        height: 20px;
+    }
+
+</style>
+
+<div class="registerFormContaier">
+
+    <div class="registerForm">
+        <a href="{% url 'chatapp:chats' %}">
+            <h1>STAT-Chat</h1>
+        </a>
+        <p>Update your profile.</p>
+        <form action="" method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            {% if field.errors %}
+            {{field}}
+            <small>{{field.errors}}</small>
+
+            {% else %}
+            {{field}}
+            <small>       </small>
+            
+
+            {% endif %}
+            
+
+
+            
+            {% endfor %}
+                
+            {% comment %} <input type="text" name="Username" placeholder="Enter Username">
+            <input type="text" name="Firstname" placeholder="Enter Firstname">
+            <input type="text" name="Lastname" placeholder="Enter Lastname">
+            <input type="password" name="Password" placeholder="Enter Password">
+            <input type="password" name="Password" placeholder="Confirm Password"> {% endcomment %}
+            <button>Submit</button>
+            {% comment %} <span><a href="">Login</a> if you have an account.</span> {% endcomment %}
+        </form>
+    </div>
+
+ 
+</div>
+{% endblock content %}

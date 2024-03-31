@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/regular.min.css"
+    integrity="sha512-WidMaWaNmZqjk3gDE6KBFCoDpBz9stTsTZZTeocfq/eDNkLfpakEd7qR0bPejvy/x0iT0dvzIq4IirnBtVer5A=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css"
+    integrity="sha512-yDUXOUWwbHH4ggxueDnC5vJv4tmfySpVdIcN1LksGZi8W8EVZv4uKGrQc0pVf66zS7LDhFJM7Zdeow1sw1/8Jw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css"
+    integrity="sha512-SgaqKKxJDQ/tAUAAXzvxZz33rmn7leYDYfBP+YoMRSENhf3zJyx3SBASt/OfeQwBHA1nxMis7mM3EV/oYT6Fdw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link rel="stylesheet" href="index.css" />
+    <title>Chatty</title>
+
+</head>
+<body>
+
+    <div class="chatContainer">
+        <style>
+            .chatContainer{
+                padding: 10px 0px 10px 0px;
+            }
+            .chatContainer, .registerFormContaier, form{
+                height: auto;
+               
+            }
+        
+            input[type="checkbox"]{
+                width: 20px !important;
+                height: 20px;
+            }
+            {% comment %} label{
+                display: none;
+            } {% endcomment %}
+        </style>
+        
+        <div class="registerFormContaier">
+        
+            <div class="registerForm">
+                <a href=""><h1>Chatty</h1></a>
+                <p>Update your profile.</p>
+                <form action="" method='POST' enctype="multipart/form-data">
+                    <input type="text" name="Username" placeholder="Enter Username">
+                    <small></small>
+                    <input type="text" name="Firstname" placeholder="Enter Firstname">
+                    <small></small>
+                    <input type="text" name="Lastname" placeholder="Enter Lastname">
+                    <small></small>
+                    <input type="password" name="Password" placeholder="Enter Password">
+                    <small></small>
+                    <input type="password" name="Password" placeholder="Confirm Password">
+                    <small></small>
+                    <button>Submit</button>
+                    <span><a href="">Login</a> if you have an account.</span>
+                </form>
+            </div>
+        
+         
+        </div>
+
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<style>
+    h4, p{
+        margin: 0px !important;
+    }
+</style>
+
+<div class="chatAreaContainer">
+    <div class="header">
+
+      {% if profile.profile_picture %}
+
+      <div class="user-pic">
+        <img src="{{profile.profile_picture.url}}" alt="">
+      </div>
+
+      {% else %}
+
+      <div class="user-pic">
+        <img src="" alt="">
+      </div>
+      
+      
+      {% endif %}
+
+       
+        <div class="user-info">
+          <a href="{% url 'chatapp:chats' %}">
+            <h4>{{profile.username}}</h4>
+          </a>
+            
+            <p>Hey!, I use STAT-Chat</p>
+        </div>
+        <small><strong>@{{request.user.username}}</strong></small>
+    </div>
+    <div class="private-chats">
+        
+        {% for chat in chats %}
+        {% if chat.sender == request.user %}
+        <div class="sender-chats" id="0">{{chat.message}}</div>
+        {% else %}
+        <div class="receiver-chats" id="0">{{chat.message}}</div>
+        {% endif %}
+        
+        {% endfor %}
+            
+        
+        
+    </div>
+    
+        <form action="">
+            <!-- <input type="text" placeholder="Hi, let's use chatty"> -->
+            <textarea name="" id="" cols="30" rows="10" placeholder="Hi, let's use STAT-Chat" required></textarea>
+            <button><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+    
+</div>
+
+
+<script>
+    
+    let chatForm = document.querySelector("form")
+
+    // this is the chat input field
+    let chatField = document.querySelector('textarea')
+    let chatContainer = document.querySelector(".private-chats")
+
+    // chat receiver ID
+    let receiver_id = {{profile.user.id}}
+
+    
+
+    let n_msg;
+
+
+    let url = "{% url 'chatapp:create-chat' %}"
+
+    console.log(chatForm)
+
+    chatForm.addEventListener("submit", createChat)
+
+    // this function creates the ChatMessage between the sender and the receiver
+    async function sendChat(data) {
+        try {
+          const response = await fetch(url, {
+            method: "POST", // or 'PUT'
+            headers: {
+              "Content-Type": "application/json",
+              'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(data),
+          });
+      
+          const result = await response.json();
+          console.log("Success:", result);
+
+          // this section creates the chatbox when a the logged-in user sends a chat
+          let chatBox = document.createElement("div")
+          chatBox.setAttribute("id", result)
+          chatBox.classList.add("sender-chats")
+          chatBox.innerText = data["msg"]
+          chatContainer.append(chatBox)
+          chatField.value = ""
+       
+
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+      
+  
+// this function calls the sendChat function and passes the necessary arguments required.
+      function createChat(e){
+        e.preventDefault()
+        const data = { msg: chatField.value, receiver_id:receiver_id};
+        console.log(data["msg"])
+        sendChat(data);
+      }
+
+
+    setInterval(getLatestChat, 2000)
+
+    // this function helps to check the backend for any new chat for the logged-in user
+      async function newChats(data) {
+        try {
+          const response = await fetch("{% url 'chatapp:get-chats'  %}", {
+            method: "POST", // or 'PUT'
+            headers: {
+              "Content-Type": "application/json",
+              'X-CSRFToken': csrftoken
+              
+            },
+            body: JSON.stringify(data),
+          });
+      
+          const result = await response.json();
+          console.log("Success:", result);
+
+          // this section retrieves new chat for the logged-in user
+          let chatBox = document.createElement("div")
+          
+          // I had to assign a custom attribute "id" to the chatBox, so that I can be able to prevent the chatContainer 
+          // from appending the newly created chatBox if it has the same ID as the previous chatBox.
+          chatBox.setAttribute("id", result.id)
+          chatBox.classList.add("receiver-chats")
+
+          // had to place the chat message into the chatBox
+          chatBox.innerText = result.msg
+          // this first "if block" makes sure we are appending the chatBox to the chatContainer if there is no new chat message
+          if(result.msg != "no chat"){
+            console.log("yes1")
+
+            if(chatContainer.children.length == 0){
+              chatContainer.append(chatBox)
+            }
+
+            // this second "if block" checks to see if the last chatBox in the chatContainer has an "ID" attribute
+            if(chatContainer.lastElementChild.hasAttribute("id")){
+             
+              // this third "if block" makes sure to check the "ID" gotten from the backend is not same as the value 
+              // of the "ID" attribute stored in chatContainer last child which is the chatBox.
+                if(result.id != chatContainer.lastElementChild.getAttribute("id")){
+                  console.log("yes 2")
+                  chatContainer.append(chatBox)
+                  
+                }
+  
+
+            
+            }
+            //chatContainer.append(chatBox)
+           
+          }
+
+         // chatContainer.append(chatBox)
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+ // this function calls the newChats function and passes the necessary arguments required.
+      function getLatestChat(){
+        let data = {sender_id: receiver_id}
+        newChats(data)
+      }
+
+    //getLatestChat()
+
+    const chatSocket = new WebSocket(
+    'ws://' + window.location.host +
+    '/ws/chat/');
+
+    chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    const message = data.message;
+
+    // Xử lý tin nhắn, ví dụ: hiển thị tin nhắn trên giao diện người dùng
+    displayMessage(message);
+};
+
+function displayMessage(message) {
+    // Tạo một phần tử HTML mới để chứa tin nhắn
+    const messageElement = document.createElement('div');
+    messageElement.innerText = message;
+
+    // Thêm tin nhắn vào phần tử chứa tin nhắn
+    const chatContainer = document.querySelector('.private-chats');
+    chatContainer.appendChild(messageElement);
+
+    // Cuộn xuống dưới cùng để hiển thị tin nhắn mới nhất
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+chatSocket.onclose = function(e) {
+    console.error('WebSocket closed unexpectedly');
+};
+
+function sendMessage(message) {
+    chatSocket.send(JSON.stringify({
+        'message': message
+    }));
+}
+
+    
+
+</script>
+
+{% endblock content %}

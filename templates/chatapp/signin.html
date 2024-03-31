@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    input{
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="registerFormContaier">
+
+    <div class="registerForm">
+        <h1>STAT-Chat</h1>
+        <p>You are welcome, login</p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Enter Username">
+            <input type="password" name="password" placeholder="Enter Password">
+            <button>Login</button>
+            <span><a href="{% url 'chatapp:register' %}">Register</a> if you don't have an account.</span>
+        </form>
+    </div>
+
+ 
+</div>
+
+{% endblock content %}
+
